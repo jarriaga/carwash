@@ -45,4 +45,25 @@ class CarwashController extends BaseController
       return response()->json(['loyalty_discount'=>0,'visits'=>0],200);
     }
 
+    /** Method to submit and proccess wash **/
+    public function proccessWash(Request $request)
+    {
+      dd($request->all());
+
+      $service = new App\Service;
+      $service->car_type = $request->vehicle;
+      $service->plate = $request->plate;
+      $service->wash_price =$request->price;
+      $service->extra_mud = $request->price_mud;
+      $final =$request->final;
+      $service->loyalty_discount = $final['discount'];
+      $service->subtotal = $final['subtotal'];
+      $service->tax = $final['taxes'];
+      $service->total = $final['total'];
+      $service->save();
+      
+      return response()->json(['success'=>2],200);
+
+    }
+
 }

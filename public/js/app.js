@@ -41891,7 +41891,7 @@ exports = module.exports = __webpack_require__(39)(undefined);
 
 
 // module
-exports.push([module.i, "\n.marginTop30[data-v-45338028]{margin-top: 30px;\n}\n.marginR20[data-v-45338028]{margin-right: 20px;\n}\n.img-button[data-v-45338028]{ width:80px;height: auto;margin-top:-32px\n}\n.btn-auto[data-v-45338028]{width:150px;\n}\n.panel[data-v-45338028]{min-height:400px;\n}\n\n", ""]);
+exports.push([module.i, "\n.marginTop30[data-v-45338028]{margin-top: 30px;\n}\n.marginR20[data-v-45338028]{margin-right: 20px;\n}\n.img-button[data-v-45338028]{ width:80px;height: auto;margin-top:-32px\n}\n.btn-auto[data-v-45338028]{width:150px;\n}\n.panel[data-v-45338028]{min-height:400px;\n}\n.img-loyalty[data-v-45338028]{width:250px; height:auto;\n}\n\n", ""]);
 
 // exports
 
@@ -42407,6 +42407,51 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -42437,7 +42482,15 @@ __WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
         plate: null,
         mud: 0,
         discount: 0,
-        visits: 0
+        visits: 0,
+        bed: 0,
+        pricemud: 0,
+        final: {
+          subtotal: 0,
+          total: 0,
+          taxes: 0,
+          discount: 0
+        }
       },
       errors: {
         plate: 0
@@ -42458,7 +42511,12 @@ __WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
           __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/get-loyalty/' + plate).then(function (response) {
             vm.object.discount = response.data.loyalty_discount;
             vm.object.visits = response.data.visits;
-            vm.currentStep = 3;
+            if (vm.object.discount > 0 || vm.object.vehicle == 'truck') {
+              vm.currentStep = 3;
+            } else {
+              vm.calculateBill();
+              vm.currentStep = 4;
+            }
           });
         }
       });
@@ -42477,6 +42535,31 @@ __WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
         //set error if empty
         this.errors.plate = 1;
       }
+    },
+    checkAdditionals: function checkAdditionals() {
+      if (this.object.bed && this.object.vehicle == 'truck') {
+        this.$swal('SORRY', 'We can not accept truck with bed let down ', 'warning');
+        this.currentStep = 3;
+      } else {
+        this.calculateBill();
+        this.currentStep = 4;
+      }
+    },
+    calculateBill: function calculateBill() {
+      if (this.object.mud) {
+        this.object.pricemud = 2;
+      }
+      this.object.final.subtotal = this.object.price + this.object.pricemud;
+      this.object.final.discount = this.object.discount > 0 ? this.object.final.subtotal - this.object.final.subtotal * this.object.discount : 0;
+      this.object.final.taxes = this.object.final.discount * 0.08;
+      this.object.final.total = this.object.final.discount + this.object.final.taxes;
+    },
+    finish: function finish() {
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/proccess/', this.object).then(function (response) {
+        console.log(response);
+        this.$swal('THANK YOU', 'We appreciate your business', 'success');
+        this.currentStep = 1;
+      });
     }
   },
   computed: {
@@ -42489,10 +42572,19 @@ __WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
           plate: null,
           mud: 0,
           discount: 0,
-          visits: 0
+          visits: 0,
+          bed: 0,
+          pricemud: 0,
+          final: {
+            subtotal: 0,
+            total: 0,
+            taxes: 0,
+            discount: 0
+          }
         };
       }
     }
+
   }
 });
 
@@ -42589,7 +42681,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "fa fa-arrow-left"
   }), _vm._v(" Back")]), _vm._v(" "), _c('div', {
     staticClass: "form-group marginTop30"
-  }, [_c('label', [_vm._v("License Plate:")]), _vm._v(" "), _c('div', {
+  }, [_c('h3', {
+    staticClass: "text-center"
+  }, [_vm._v("License plate")]), _vm._v(" "), _c('div', {
     staticClass: "input-group"
   }, [_c('input', {
     directives: [{
@@ -42639,7 +42733,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.currentStep == 3),
       expression: "currentStep==3"
     }],
-    staticClass: "step3"
+    staticClass: "step3 "
   }, [_c('a', {
     attrs: {
       "href": "#"
@@ -42647,12 +42741,164 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": function($event) {
         $event.preventDefault();
-        _vm.currentStep = 1
+        _vm.currentStep = 2
       }
     }
   }, [_c('i', {
     staticClass: "fa fa-arrow-left"
-  }), _vm._v(" Back")])])])]), _vm._v(" "), _vm._m(2)])])])
+  }), _vm._v(" Back")]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.object.discount > 0),
+      expression: "object.discount>0"
+    }],
+    staticClass: "row"
+  }, [_vm._m(2), _vm._v(" "), _vm._m(3)]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.object.vehicle == 'truck'),
+      expression: "object.vehicle=='truck'"
+    }],
+    staticClass: "col-md-12 text-center marginTop30"
+  }, [_vm._m(4), _vm._v(" "), _c('label', {
+    staticClass: "marginTop30",
+    attrs: {
+      "for": "bed"
+    }
+  }, [_vm._v("Does your truck has the bed down? ")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.object.bed),
+      expression: "object.bed"
+    }],
+    attrs: {
+      "name": "bed",
+      "id": "bed",
+      "type": "checkbox",
+      "true-value": 1,
+      "false-value": 0
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.object.bed) ? _vm._i(_vm.object.bed, null) > -1 : _vm._q(_vm.object.bed, 1)
+    },
+    on: {
+      "__c": function($event) {
+        var $$a = _vm.object.bed,
+          $$el = $event.target,
+          $$c = $$el.checked ? (1) : (0);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.object.bed = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.object.bed = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.object.bed = $$c
+        }
+      }
+    }
+  }), _vm._v(" "), _c('br'), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": "mud"
+    }
+  }, [_vm._v("Does your truck has mud? ")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.object.mud),
+      expression: "object.mud"
+    }],
+    attrs: {
+      "name": "mud",
+      "id": "mud",
+      "type": "checkbox",
+      "true-value": 1,
+      "false-value": 0
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.object.mud) ? _vm._i(_vm.object.mud, null) > -1 : _vm._q(_vm.object.mud, 1)
+    },
+    on: {
+      "__c": function($event) {
+        var $$a = _vm.object.mud,
+          $$el = $event.target,
+          $$c = $$el.checked ? (1) : (0);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.object.mud = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.object.mud = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.object.mud = $$c
+        }
+      }
+    }
+  }), _vm._v(" +$2 fee\n\n                    ")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-12 text-center marginTop30"
+  }, [_c('button', {
+    staticClass: "btn btn-success btn-lg",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.checkAdditionals
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-credit-card"
+  }), _vm._v(" Checkout\n                      ")])])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.currentStep == 4),
+      expression: "currentStep==4"
+    }],
+    staticClass: "step4"
+  }, [_c('div', {
+    staticClass: "col-md-6 col-md-offset-3"
+  }, [_c('h3', {
+    staticClass: "marginTop30 text-center"
+  }, [_vm._v("Checkout")]), _vm._v(" "), _c('ul', {
+    staticClass: "list-group marginTop30"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_vm._v("Vehicle " + _vm._s(_vm.object.vehicle))]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_vm._v("Plate " + _vm._s(_vm.object.plate))]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_vm._v("Visits " + _vm._s(_vm.object.visits))]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_vm._v("Price $" + _vm._s(_vm.object.price))]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.object.mud && _vm.object.vehicle == 'truck'),
+      expression: "object.mud && object.vehicle=='truck'"
+    }],
+    staticClass: "list-group-item"
+  }, [_vm._v("Extra Mud $2")]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_vm._v("Subtotal $" + _vm._s(_vm.object.final.subtotal))]), _vm._v(" "), (_vm.object.discount > 0) ? _c('li', {
+    staticClass: "list-group-item"
+  }, [_vm._v("Discount " + _vm._s(_vm.object.discount * 100) + "% off")]) : _vm._e(), _vm._v(" "), (_vm.object.discount > 0) ? _c('li', {
+    staticClass: "list-group-item"
+  }, [_vm._v("After Discount $" + _vm._s(_vm.object.final.discount) + "  }}")]) : _vm._e(), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_vm._v("Taxes $" + _vm._s(_vm.object.final.taxes))]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('strong', [_vm._v("Gran Total $" + _vm._s(_vm.object.final.total))])])]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-block btn-lg btn-success marginTop30",
+    on: {
+      "click": _vm.finish
+    }
+  }, [_vm._v(" Pay & finish")])])])])]), _vm._v(" "), _vm._m(5)])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
@@ -42660,7 +42906,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "col-md-12 text-center"
-  }, [_c('h3', [_vm._v(" 1. Please select vehicle")])])
+  }, [_c('h3', [_vm._v(" Please select vehicle")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-6 marginTop30"
+  }, [_c('img', {
+    staticClass: "img-loyalty img-responsive",
+    attrs: {
+      "src": "/images/loyalty.png"
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-6 marginTop30"
+  }, [_c('h3', {
+    staticClass: "text-center"
+  }, [_vm._v("Woohoo!"), _c('br'), _vm._v("We have "), _c('strong', [_vm._v("50% off")]), _vm._v(" for you")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('h4', [_vm._v("Services for trucks "), _c('small', [_vm._v("Check if apply")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "col-md-12"
