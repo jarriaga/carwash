@@ -42550,15 +42550,16 @@ __WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
         this.object.pricemud = 2;
       }
       this.object.final.subtotal = this.object.price + this.object.pricemud;
-      this.object.final.discount = this.object.discount > 0 ? this.object.final.subtotal - this.object.final.subtotal * this.object.discount : 0;
-      this.object.final.taxes = this.object.final.discount * 0.08;
-      this.object.final.total = this.object.final.discount + this.object.final.taxes;
+      this.object.final.discount = this.object.final.subtotal * this.object.discount;
+      this.object.final.taxes = (this.object.final.subtotal - this.object.final.discount) * 0.08;
+      this.object.final.total = this.object.final.subtotal + this.object.final.taxes - this.object.final.discount;
     },
     finish: function finish() {
+      var vm = this;
       __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/proccess/', this.object).then(function (response) {
         console.log(response);
-        this.$swal('THANK YOU', 'We appreciate your business', 'success');
-        this.currentStep = 1;
+        vm.$swal('THANK YOU', 'We appreciate your business', 'success');
+        vm.currentStep = 1;
       });
     }
   },
@@ -42869,13 +42870,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "list-group marginTop30"
   }, [_c('li', {
     staticClass: "list-group-item"
-  }, [_vm._v("Vehicle " + _vm._s(_vm.object.vehicle))]), _vm._v(" "), _c('li', {
+  }, [_vm._v("Vehicle: " + _vm._s(_vm.object.vehicle))]), _vm._v(" "), _c('li', {
     staticClass: "list-group-item"
-  }, [_vm._v("Plate " + _vm._s(_vm.object.plate))]), _vm._v(" "), _c('li', {
+  }, [_vm._v("Plate: " + _vm._s(_vm.object.plate))]), _vm._v(" "), _c('li', {
     staticClass: "list-group-item"
-  }, [_vm._v("Visits " + _vm._s(_vm.object.visits))]), _vm._v(" "), _c('li', {
+  }, [_vm._v("Visits: " + _vm._s(_vm.object.visits))]), _vm._v(" "), _c('li', {
     staticClass: "list-group-item"
-  }, [_vm._v("Price $" + _vm._s(_vm.object.price))]), _vm._v(" "), _c('li', {
+  }, [_vm._v("Price: $" + _vm._s(_vm.object.price))]), _vm._v(" "), _c('li', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -42883,15 +42884,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "object.mud && object.vehicle=='truck'"
     }],
     staticClass: "list-group-item"
-  }, [_vm._v("Extra Mud $2")]), _vm._v(" "), _c('li', {
+  }, [_vm._v("Extra Mud: $2")]), _vm._v(" "), _c('li', {
     staticClass: "list-group-item"
-  }, [_vm._v("Subtotal $" + _vm._s(_vm.object.final.subtotal))]), _vm._v(" "), (_vm.object.discount > 0) ? _c('li', {
+  }, [_vm._v("Subtotal: $" + _vm._s(_vm.object.final.subtotal))]), _vm._v(" "), (_vm.object.discount > 0) ? _c('li', {
     staticClass: "list-group-item"
   }, [_vm._v("Discount " + _vm._s(_vm.object.discount * 100) + "% off")]) : _vm._e(), _vm._v(" "), (_vm.object.discount > 0) ? _c('li', {
     staticClass: "list-group-item"
-  }, [_vm._v("After Discount $" + _vm._s(_vm.object.final.discount) + "  }}")]) : _vm._e(), _vm._v(" "), _c('li', {
+  }, [_vm._v("Subtotal after discount $" + _vm._s(_vm.object.final.subtotal - _vm.object.final.discount) + " ")]) : _vm._e(), _vm._v(" "), _c('li', {
     staticClass: "list-group-item"
-  }, [_vm._v("Taxes $" + _vm._s(_vm.object.final.taxes))]), _vm._v(" "), _c('li', {
+  }, [_vm._v("Taxes (8%) $" + _vm._s(_vm.object.final.taxes))]), _vm._v(" "), _c('li', {
     staticClass: "list-group-item"
   }, [_c('strong', [_vm._v("Gran Total $" + _vm._s(_vm.object.final.total))])])]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-block btn-lg btn-success marginTop30",
@@ -45553,6 +45554,10 @@ exports.push([module.i, "\n.marginTop30[data-v-106963c9]{margin-top: 30px;\n}\n.
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -45569,17 +45574,56 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 //CarWash Vue single page App
-/* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
-    },
+/* harmony default export */ __webpack_exports__["default"] = (_defineProperty({
+  mounted: function mounted() {
+    console.log('Component mounted.');
+  },
 
-    data: function data() {
-        return {};
-    }
-});
+  data: function data() {
+    return {
+      history: []
+    };
+  }
+}, 'mounted', function mounted() {
+  var vm = this;
+  __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/history/').then(function (response) {
+    vm.history = response.data;
+  });
+}));
 
 /***/ }),
 /* 59 */
@@ -45616,11 +45660,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "aria-hidden": "true"
     }
-  }), _vm._v(" History")])], 1)])])])])
+  }), _vm._v(" History")]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-12"
+  }, [_c('table', {
+    staticClass: "table table-striped marginTop30"
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.history), function(item) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.car_type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.plate))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.subtotal))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.loyalty_discount))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.tax))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.total))])])
+  }))])])], 1)])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
   }, [_c('h4', [_vm._v("History")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('td', [_vm._v("Vehicle")]), _vm._v(" "), _c('td', [_vm._v("Plate")]), _vm._v(" "), _c('td', [_vm._v("Subtotal")]), _vm._v(" "), _c('td', [_vm._v("Discount")]), _vm._v(" "), _c('td', [_vm._v("Taxes")]), _vm._v(" "), _c('td', [_vm._v("Total")])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {

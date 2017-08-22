@@ -19,3 +19,5 @@ Route::get('/get-alerts/{plate}','CarwashController@getAlert')->name('getAlerts'
 Route::get('/get-loyalty/{plate}','CarwashController@getLoyalty')->name('getLoyalty');
 
 Route::post('/proccess','CarwashController@proccessWash')->name('proccessWash');
+
+Route::get('/history','CarwashController@getHistory')->name('history');

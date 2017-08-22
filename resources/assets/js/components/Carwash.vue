@@ -80,15 +80,15 @@
                         <div class="col-md-6 col-md-offset-3">
                         <h3 class="marginTop30 text-center">Checkout</h3>
                         <ul class="list-group marginTop30">
-                           <li class="list-group-item">Vehicle {{object.vehicle}}</li>
-                           <li class="list-group-item">Plate {{object.plate}}</li>
-                           <li class="list-group-item">Visits {{object.visits}}</li>
-                           <li class="list-group-item">Price ${{object.price}}</li>
-                           <li class="list-group-item" v-show="object.mud && object.vehicle=='truck'">Extra Mud $2</li>
-                           <li class="list-group-item">Subtotal ${{object.final.subtotal}}</li>
+                           <li class="list-group-item">Vehicle: {{object.vehicle}}</li>
+                           <li class="list-group-item">Plate: {{object.plate}}</li>
+                           <li class="list-group-item">Visits: {{object.visits}}</li>
+                           <li class="list-group-item">Price: ${{object.price}}</li>
+                           <li class="list-group-item" v-show="object.mud && object.vehicle=='truck'">Extra Mud: $2</li>
+                           <li class="list-group-item">Subtotal: ${{object.final.subtotal}}</li>
                            <li class="list-group-item" v-if="object.discount>0">Discount {{object.discount*100}}% off</li>
-                           <li class="list-group-item" v-if="object.discount>0">After Discount ${{object.final.discount}}  }}</li>
-                           <li class="list-group-item">Taxes ${{ object.final.taxes }}</li>
+                           <li class="list-group-item" v-if="object.discount>0">Subtotal after discount ${{object.final.subtotal-object.final.discount}} </li>
+                           <li class="list-group-item">Taxes (8%) ${{ object.final.taxes }}</li>
                            <li class="list-group-item"><strong>Gran Total ${{object.final.total }}</strong></li>
                          </ul>
                          <button class="btn btn-block btn-lg btn-success marginTop30" v-on:click="finish"> Pay & finish</button>
@@ -215,20 +215,21 @@ Vue.use(VueSweetAlert)
         calculateBill:function(){
           if(this.object.mud){this.object.pricemud=2;}
           this.object.final.subtotal = this.object.price+this.object.pricemud;
-          this.object.final.discount = (this.object.discount>0)?(this.object.final.subtotal -(this.object.final.subtotal * this.object.discount)):0;
-          this.object.final.taxes =  this.object.final.discount * 0.08;
-          this.object.final.total = this.object.final.discount+this.object.final.taxes;
+          this.object.final.discount =  this.object.final.subtotal * this.object.discount;
+          this.object.final.taxes =  (this.object.final.subtotal - this.object.final.discount) * 0.08;
+          this.object.final.total = this.object.final.subtotal+this.object.final.taxes-this.object.final.discount;
         },
         finish:function(){
+          var vm= this;
           axios.post(`/proccess/`,this.object)
           .then(function(response){
             console.log(response);
-            this.$swal(
+            vm.$swal(
               'THANK YOU',
               'We appreciate your business',
               'success'
             );
-            this.currentStep=1;
+            vm.currentStep=1;
           });
         }
       },

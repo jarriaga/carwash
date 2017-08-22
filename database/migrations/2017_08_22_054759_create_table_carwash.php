@@ -15,7 +15,7 @@ class CreateTableCarwash extends Migration
     {
         Schema::create('services',function(Blueprint $table){
           $table->increments('id');
-          $table->string('cart_type');
+          $table->string('car_type');
           $table->string('plate');
           $table->float('wash_price',8,2);
           $table->float('extra_mud',8,2);
