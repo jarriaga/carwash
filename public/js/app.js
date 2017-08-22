@@ -41891,7 +41891,7 @@ exports = module.exports = __webpack_require__(39)(undefined);
 
 
 // module
-exports.push([module.i, "\n.marginTop30[data-v-45338028]{margin-top: 30px;\n}\n.marginR20[data-v-45338028]{margin-right: 20px;\n}\n\n", ""]);
+exports.push([module.i, "\n.marginTop30[data-v-45338028]{margin-top: 30px;\n}\n.marginR20[data-v-45338028]{margin-right: 20px;\n}\n.img-button[data-v-45338028]{ width:80px;height: auto;margin-top:-32px\n}\n.btn-auto[data-v-45338028]{width:150px;\n}\n\n", ""]);
 
 // exports
 
@@ -42351,16 +42351,56 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 //CarWash Vue single page App
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
-    },
+  mounted: function mounted() {
+    console.log('Component mounted.');
+  },
 
-    data: function data() {
-        return {};
-    }
+  data: function data() {
+    return {
+      rules: {
+        washPrice: {
+          car: 5,
+          truck: 10
+        }
+      },
+      // define step to show
+      currentStep: 1,
+      // final object to save
+      object: {
+        vehicle: null,
+        price: null,
+        plate: null,
+        mud: 0,
+        discount: 0
+      }
+    };
+  }
 });
 
 /***/ }),
@@ -42378,11 +42418,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.currentStep == 1),
+      expression: "currentStep==1"
+    }],
+    staticClass: "step1"
   }, [_c('router-link', {
     staticClass: "marginR20",
     attrs: {
       "to": {
-        name: 'carwash'
+        name: 'homepage'
       }
     }
   }, [_c('i', {
@@ -42398,11 +42446,37 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "aria-hidden": "true"
     }
-  }), _vm._v(" History")])], 1)])])])])
+  }), _vm._v(" History")]), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _vm._m(3)], 1)])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
-  }, [_c('h2', [_vm._v("Carwash Dashboard")])])
+  }, [_c('h4', [_vm._v("Carwash Dashboard")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-12 text-center"
+  }, [_c('h3', [_vm._v(" 1. Please select vehicle")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-6 col-xs-6 text-center"
+  }, [_c('button', {
+    staticClass: "btn btn-large btn-info btn-auto"
+  }, [_c('h3', [_vm._v("CAR")]), _vm._v(" "), _c('img', {
+    staticClass: "img-button",
+    attrs: {
+      "src": "/images/car.png"
+    }
+  })])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-6 col-xs-6 text-center"
+  }, [_c('button', {
+    staticClass: "btn btn-large btn-info btn-auto"
+  }, [_c('h3', [_vm._v("TRUCK")]), _vm._v(" "), _c('img', {
+    staticClass: "img-button",
+    attrs: {
+      "src": "/images/truck.png"
+    }
+  })])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -45075,7 +45149,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "marginR20",
     attrs: {
       "to": {
-        name: 'carwash'
+        name: 'homepage'
       }
     }
   }, [_c('i', {
@@ -45095,7 +45169,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
-  }, [_c('h2', [_vm._v("History")])])
+  }, [_c('h4', [_vm._v("History")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
