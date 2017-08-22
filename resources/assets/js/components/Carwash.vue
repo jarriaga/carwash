@@ -268,5 +268,12 @@ Vue.use(VueSweetAlert)
 .btn-auto{width:150px;}
 .panel{min-height:400px;}
 .img-loyalty{width:250px; height:auto;}
+@media all and (max-width: 500px){
+  .img-button{     width: 50px;
+    height: auto;
+    margin-top: -17px;}
+  .btn-auto{width:111px;}
+
+}
 
 </style>

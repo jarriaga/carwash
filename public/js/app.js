@@ -41891,7 +41891,7 @@ exports = module.exports = __webpack_require__(39)(undefined);
 
 
 // module
-exports.push([module.i, "\n.marginTop30[data-v-45338028]{margin-top: 30px;\n}\n.marginR20[data-v-45338028]{margin-right: 20px;\n}\n.img-button[data-v-45338028]{ width:80px;height: auto;margin-top:-32px\n}\n.btn-auto[data-v-45338028]{width:150px;\n}\n.panel[data-v-45338028]{min-height:400px;\n}\n.img-loyalty[data-v-45338028]{width:250px; height:auto;\n}\n\n", ""]);
+exports.push([module.i, "\n.marginTop30[data-v-45338028]{margin-top: 30px;\n}\n.marginR20[data-v-45338028]{margin-right: 20px;\n}\n.img-button[data-v-45338028]{ width:80px;height: auto;margin-top:-32px\n}\n.btn-auto[data-v-45338028]{width:150px;\n}\n.panel[data-v-45338028]{min-height:400px;\n}\n.img-loyalty[data-v-45338028]{width:250px; height:auto;\n}\n@media all and (max-width: 500px){\n.img-button[data-v-45338028]{     width: 50px;\n    height: auto;\n    margin-top: -17px;\n}\n.btn-auto[data-v-45338028]{width:111px;\n}\n}\n\n", ""]);
 
 // exports
 
