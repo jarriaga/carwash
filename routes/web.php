@@ -12,3 +12,8 @@
 */
 
 Route::get('/', 'CarwashController@getIndex')->name('index');
+
+
+Route::get('/get-alerts/{plate}','CarwashController@getAlert')->name('getAlerts');
+
+Route::get('/get-loyalty/{plate}','CarwashController@getLoyalty')->name('getLoyalty');
